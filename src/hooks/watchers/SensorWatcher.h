@@ -9,8 +9,7 @@
 #include "observable/ObservableObjects.h"
 #include "logs/BetterLogger.h"
 
-#define SENSOR_WATCHER_TAG "sensor_watcher"
-#define SENSOR_WATCHER_TYPE "sensor"
+static const char SENSOR_WATCHER_TAG[] PROGMEM = "sensor_watcher";
 
 namespace Hook {
 class SensorWatcher : public Watcher<int16_t> {

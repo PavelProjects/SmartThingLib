@@ -14,9 +14,6 @@
 #include "settings/SettingsManager.h"
 #include "Features.h"
 
-#define SMART_THING_VERSION "0.7"
-#define SMART_THING_TAG "smart_thing"
-
 #ifdef ARDUINO_ARCH_ESP32
 #define LED_PIN 2
 #endif
@@ -24,29 +21,21 @@
 #define LED_PIN LED_BUILTIN
 #define WIFI_MODE_STA WIFI_STA
 #define WIFI_MODE_AP WIFI_AP
+// BRUH
 #define LOW 1
 #define HIGH 0
 #endif
 
-#define WIFI_SETUP_TIMEOUT 10000
-
-#define MULTICAST_GROUP IPAddress(224, 1, 1, 1)
-#define MULTICAST_PORT 7778
+#ifdef LED_BUILTIN
+#define LED_PIN LED_BUILTIN
+#endif
 
 #define DEVICE_NAME_LENGTH_MAX 15
 #define DEVICE_TYPE_LENGTH_MAX 15
 
-#ifndef SMART_THING_LOOP_TASK_DELAY
-#define SMART_THING_LOOP_TASK_DELAY 100  // ms
-#endif
-
-#ifndef SMART_THING_HOOKS_CHECK_DELAY
-#define SMART_THING_HOOKS_CHECK_DELAY 500 // ms
-#endif
-
-#ifndef SMART_THING_BEACON_SEND_DELAY
-#define SMART_THING_BEACON_SEND_DELAY 1000 //ms
-#endif
+#define DEFAULT_DEVICE_NAME "SMT_DEVICE"
+static const char SMART_THING_VERSION[] PROGMEM = "0.7";
+static const char SMART_THING_TAG[] PROGMEM = "smart_thing";
 
 class SmartThingClass {
  public:
@@ -55,11 +44,6 @@ class SmartThingClass {
 
   bool init(String type) {
     _type = type;
-    return init();
-  }
-  bool init(String type, String name) {
-    _type = type;
-    _name = name;
     return init();
   }
 
@@ -117,7 +101,6 @@ class SmartThingClass {
   long _lastHooksCheck = -1;
 
   String _ip;
-  String _name;
   String _type;
   String _broadcastMessage;
   

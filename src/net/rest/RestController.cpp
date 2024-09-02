@@ -12,7 +12,7 @@
 #include "net/rest/handlers/DangerRequestHandler.h"
 #include "net/rest/Pages.h"
 
-#define WEB_SERVER_TAG "web_server"
+static const char WEB_SERVER_TAG[] PROGMEM = "web_server";
 
 RestControllerClass RestController;
 

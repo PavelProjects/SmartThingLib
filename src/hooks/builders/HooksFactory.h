@@ -11,10 +11,9 @@
 #include "hooks/impls/Hook.h"
 #include "hooks/impls/HttpHook.h"
 
-#define HOOKS_FACTORY_TAG "hooks_factory"
-
-#define CB_BUILDER_TRIGGER "trigger"
-#define CB_BUILDER_COMPARE "compareType"
+static const char HOOKS_FACTORY_TAG[] PROGMEM = "hooks_factory";
+static const char CB_BUILDER_TRIGGER[] PROGMEM = "trigger";
+static const char CB_BUILDER_COMPARE[] PROGMEM = "compareType";
 
 #define DEFAULT_SENSORS_HOOKS_TEMPLATES_JSON                                  \
   "{\"threshold\":{\"required\":false},\"trigger\":{\"required\":false},\"compareType\":{\"required\":true," \

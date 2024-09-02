@@ -12,12 +12,12 @@
 #include "net/rest/handlers/HandlerUtils.h"
 #include "net/rest/handlers/RequestHandler.h"
 
-#define HOOKS_RQ_PATH "/hooks"
-#define HOOKS_RQ_TAG "hooks_handler"
-
 #define HOOK_NAME_ARG "name"
 #define HOOK_OBSERVABLE_TYPE "type"
 #define HOOK_ID_ARG "id"
+
+static const char HOOKS_RQ_PATH[] PROGMEM = "/hooks";
+static const char HOOKS_RQ_TAG[] PROGMEM = "hooks_handler";
 
 // todo cut off first /hooks?
 class HooksRequestHandler : public RequestHandler {
@@ -97,7 +97,7 @@ class HooksRequestHandler : public RequestHandler {
     }
     if (request->method() == HTTP_POST) {
       if (_body.isEmpty()) {
-        return request->beginResponse(400, CONTENT_TYPE_JSON, "Body is missing!");
+        return request->beginResponse(400, CONTENT_TYPE_JSON, ERROR_BODY_MISSING);
       }
       LOGGER.info(HOOKS_RQ_TAG, "Creating new hook");
       int id = HooksManager.createHookFromJson(_body.c_str());
@@ -117,7 +117,7 @@ class HooksRequestHandler : public RequestHandler {
     }
     if (request->method() == HTTP_PUT) {
       if (_body.isEmpty()) {
-        return request->beginResponse(400, CONTENT_TYPE_JSON, buildErrorJson("Body is missing!"));
+        return request->beginResponse(400, CONTENT_TYPE_JSON, ERROR_BODY_MISSING);
       }
 
       LOGGER.info(HOOKS_RQ_TAG, "Updating hook");

@@ -9,8 +9,8 @@
 #include "logs/BetterLogger.h"
 #include "net/rest/handlers/HandlerUtils.h"
 
-#define ACTION_RQ_PATH "/action"
-#define ACTION_RQ_TAG "action_handler"
+static const char ACTION_RQ_PATH[] PROGMEM = "/action";
+static const char ACTION_RQ_TAG[] PROGMEM = "action_handler";
 
 using namespace Action;
 

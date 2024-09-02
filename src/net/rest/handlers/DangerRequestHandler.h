@@ -4,8 +4,8 @@
 #include "SmartThing.h"
 #include "logs/BetterLogger.h"
 
-#define DANGER_RQ_PATH "/danger"
-#define DANGER_RQ_TAG "danger_handler"
+static const char DANGER_RQ_PATH[] PROGMEM = "/danger";
+static const char DANGER_RQ_TAG[] PROGMEM = "danger_handler";
 
 class DangerRequestHandler : public AsyncWebHandler {
  public:

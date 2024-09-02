@@ -13,7 +13,7 @@
 #include "hooks/impls/Hook.h"
 #include "settings/SettingsManager.h"
 
-#define NOTIFICATION_HOOK_TAG "notification_hook"
+static const char NOTIFICATION_HOOK_TAG[] PROGMEM = "notification_hook";
 #define MESSAGE_FIELD "message"
 #define NOTIFICATION_TYPE_FIELD "ntfType"
 

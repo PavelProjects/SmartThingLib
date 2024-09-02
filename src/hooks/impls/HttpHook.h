@@ -13,7 +13,7 @@
 #include "hooks/impls/Hook.h"
 #include "logs/BetterLogger.h"
 
-#define HTTP_HOOK_TAG "http_hook"
+static const char HTTP_HOOK_TAG[] PROGMEM = "http_hook";
 
 namespace Hook {
 template<class T, typename V, typename std::enable_if<std::is_base_of<Hook<V>, T>::value>::type* = nullptr>

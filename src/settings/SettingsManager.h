@@ -11,11 +11,9 @@
 #define LOGGER_ADDRESS_CONFIG "laddr"
 #define GATEWAY_CONFIG "gtw"
 
-#define SETTINGS_MANAGER_TAG "settings_manager"
-
-// deprecated
-#define JSON_SETTINGS_DOC_SIZE 2048
-#define EEPROM_LOAD_SIZE 1024
+#ifndef EEPROM_LOAD_SIZE
+#define EEPROM_LOAD_SIZE 2048
+#endif
 
 class SettingsManager {
  private:
@@ -42,8 +40,8 @@ class SettingsManager {
   JsonObject getWiFi();
   void dropWifiCredits();
 
-  const String getDeviceName();
-  void setDeviceName(const char* name);
+  const char * getDeviceName();
+  void setDeviceName(String name);
 
   void setHooks(JsonArray doc);
   JsonArray getHooks();

@@ -9,8 +9,8 @@
 #include "settings/ConfigEntriesList.h"
 #include "net/rest/handlers/RequestHandler.h"
 
-#define CONFIG_PATH "/config"
-#define CONFIG_LOG_TAG "config_handler"
+static const char CONFIG_PATH[] PROGMEM = "/config";
+static const char CONFIG_LOG_TAG[] PROGMEM = "config_handler";
 
 class ConfigRequestHandler : public RequestHandler {
  public:

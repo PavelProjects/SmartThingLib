@@ -4,7 +4,7 @@
 #include "hooks/impls/HttpHook.h"
 #include "logs/BetterLogger.h"
 
-#define HTTP_HOOK_BUILDER_TAG "http_cb_builder"
+static const char HTTP_HOOK_BUILDER_TAG[] PROGMEM = "http_cb_builder";
 
 #define HTTP_HOOKS_TEMPLATES_JSON                                      \
   "{\"url\": {\"required\": true},\"method\": {\"required\": "             \

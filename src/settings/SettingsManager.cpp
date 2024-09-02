@@ -3,10 +3,11 @@
 
 #include <EEPROM.h>
 
-#define GROUP_CONFIG "cg"
-#define GROUP_WIFI "wf"
-#define DEVICE_NAME "dn"
-#define GROUP_HOOKS "cb"
+static const char GROUP_CONFIG[] PROGMEM = "cg";
+static const char GROUP_WIFI[] PROGMEM = "wf";
+static const char DEVICE_NAME[] PROGMEM = "dn";
+static const char GROUP_HOOKS[] PROGMEM = "cb";
+static const char SETTINGS_MANAGER_TAG[] PROGMEM = "settings_manager";
 
 #ifdef ARDUINO_ARCH_ESP32
 bool eepromBegin(size_t size) {
@@ -45,7 +46,7 @@ void SettingsManager::addDefaultSettings() {
   _settings[DEVICE_NAME] = ESP.getChipModel();
   #endif
   #ifdef ARDUINO_ARCH_ESP8266
-  _settings[DEVICE_NAME] = "SMT_DEV";
+  _settings[DEVICE_NAME] = DEFAULT_DEVICE_NAME;
   #endif
   save();
 }
@@ -187,15 +188,18 @@ void SettingsManager::dropConfig() {
 
 JsonObject SettingsManager::getWiFi() { return getOrCreateObject(GROUP_WIFI); }
 
-void SettingsManager::setDeviceName(const char* name) {
+void SettingsManager::setDeviceName(String name) {
   _settings[DEVICE_NAME] = name;
 }
 
-const String SettingsManager::getDeviceName() {
+const char * SettingsManager::getDeviceName() {
   if (_settings.containsKey(DEVICE_NAME)) {
-    return _settings[DEVICE_NAME];
+    String name = _settings[DEVICE_NAME];
+    if (!name.isEmpty()) {
+      return name.c_str();
+    }
   }
-  return "";
+  return DEFAULT_DEVICE_NAME;
 }
 
 void SettingsManager::setHooks(JsonArray doc) {

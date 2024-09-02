@@ -8,8 +8,8 @@
 #include "settings/SettingsManager.h"
 #include "net/rest/handlers/RequestHandler.h"
 
-#define WIFI_LOG_TAG "wifi_handler"
-#define WIFI_RQ_PATH "/wifi"
+static const char WIFI_RQ_PATH[] PROGMEM = "/wifi";
+static const char WIFI_LOG_TAG[] PROGMEM = "wifi_handler";
 
 class WiFiRequesthandler : public RequestHandler {
  public:
@@ -35,7 +35,7 @@ class WiFiRequesthandler : public RequestHandler {
 
       return request->beginResponse(200, CONTENT_TYPE_JSON, response);
     } else if (request->method() == HTTP_POST) {
-      if (_body.length() == 0) {
+      if (_body.isEmpty()) {
         return request->beginResponse(400, CONTENT_TYPE_JSON, ERROR_BODY_MISSING);
       }
 

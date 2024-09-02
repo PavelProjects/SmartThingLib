@@ -12,12 +12,12 @@
 #include <WiFiClient.h>
 #endif
 
-#define LOGGER_TAG "LOGGER"
+static const char LOGGER_TAG[] PROGMEM = "LOGGER";
 
 // name_&_level_&_tag_&_message
-#define TCP_LOGGER_MESSAGE_TEMPLATE "%s&%u&%s&"
+static const char TCP_LOGGER_MESSAGE_TEMPLATE[] PROGMEM = "%s&%u&%s&";
 // ip_name_&_level_&_tag_&_message
-#define UDP_LOGGER_MESSAGE_TEMPLATE "%s&%s&%u&%s&"
+static const char UDP_LOGGER_MESSAGE_TEMPLATE[] PROGMEM = "%s&%s&%u&%s&";
 
 class BetterLogger {
  public:

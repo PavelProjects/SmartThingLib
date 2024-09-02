@@ -8,8 +8,8 @@
 #include "settings/SettingsManager.h"
 #include "net/rest/handlers/RequestHandler.h"
 
-#define INFO_RQ_PATH "/info"
-#define INFO_RQ_TAG "info_handler"
+static const char INFO_RQ_PATH[] PROGMEM = "/info";
+static const char INFO_RQ_TAG[] PROGMEM = "info_handler";
 
 class InfoRequestHandler : public RequestHandler {
  public:
@@ -46,7 +46,7 @@ class InfoRequestHandler : public RequestHandler {
       }
       if (request->method() == HTTP_PUT) {
         if (_body.isEmpty()) {
-          return request->beginResponse(400, CONTENT_TYPE_JSON, buildErrorJson("Body is missing!"));
+          return request->beginResponse(400, CONTENT_TYPE_JSON, ERROR_BODY_MISSING);
         }
         JsonDocument jsDoc;
         deserializeJson(jsDoc, _body);

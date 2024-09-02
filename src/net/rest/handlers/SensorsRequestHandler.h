@@ -7,8 +7,8 @@
 #include "SmartThing.h"
 #include "logs/BetterLogger.h"
 
-#define SENSORS_RQ_PATH "/sensors"
-#define SENSORS_RQ_TAG "sensors_handler"
+static const char SENSORS_RQ_PATH[] PROGMEM = "/sensors";
+static const char SENSORS_RQ_TAG[] PROGMEM = "sensors_handler";
 
 class SensorsRequestHandler : public AsyncWebHandler {
  public:

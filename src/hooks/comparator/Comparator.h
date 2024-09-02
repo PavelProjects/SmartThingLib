@@ -1,9 +1,6 @@
 
 #ifndef COMPARATOR_H
 #define COMPARATOR_H
-#include "logs/BetterLogger.h"
-
-#define COMPARATOR_TAG "comparator"
 
 namespace Hook {
 enum CompareType { EQ, NEQ, GTE, LTE };

@@ -9,9 +9,7 @@
 #include "observable/ObservableObjects.h"
 #include "logs/BetterLogger.h"
 
-#define DEVICE_STATE_WATCHER_TAG "device_state_watcher"
-
-#define STATE_WATCHER_TYPE "state"
+static const char DEVICE_STATE_WATCHER_TAG[] PROGMEM = "device_state_watcher";
 
 namespace Hook {
 class DeviceStateWatcher : public Watcher<String> {

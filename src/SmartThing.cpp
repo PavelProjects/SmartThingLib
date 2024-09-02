@@ -2,6 +2,22 @@
 
 #define WIPE_PIN 19
 #define WIPE_TIMEOUT 5000
+#define WIFI_SETUP_TIMEOUT 10000
+
+#ifndef SMART_THING_LOOP_TASK_DELAY
+#define SMART_THING_LOOP_TASK_DELAY 100  // ms
+#endif
+
+#ifndef SMART_THING_HOOKS_CHECK_DELAY
+#define SMART_THING_HOOKS_CHECK_DELAY 500 // ms
+#endif
+
+#ifndef SMART_THING_BEACON_SEND_DELAY
+#define SMART_THING_BEACON_SEND_DELAY 1000 //ms
+#endif
+
+static const IPAddress MULTICAST_GROUP = IPAddress(224, 1, 1, 1);
+static const int MULTICAST_PORT = 7778;
 
 SmartThingClass SmartThing;
 
@@ -18,8 +34,8 @@ bool SmartThingClass::init() {
   STSettings.loadSettings();
   LOGGER.debug(SMART_THING_TAG, "Settings manager loaded");
 
-  _name = STSettings.getDeviceName();
-  LOGGER.debug(SMART_THING_TAG, "Device type/name: %s/%s", _type.c_str(), _name.c_str());
+  const char * name = STSettings.getDeviceName();
+  LOGGER.debug(SMART_THING_TAG, "Device type/name: %s/%s", _type.c_str(), name);
 
   LOGGER.debug(
     SMART_THING_TAG,
@@ -41,7 +57,7 @@ bool SmartThingClass::init() {
   if (wifiConnected()) {
     LOGGER.info(SMART_THING_TAG, "WiFi connected, local ip %s", _ip.c_str());
     delay(1000);
-    LOGGER.init(STSettings.getConfig()[LOGGER_ADDRESS_CONFIG], _name.c_str());
+    LOGGER.init(STSettings.getConfig()[LOGGER_ADDRESS_CONFIG], name);
 
     #ifdef ARDUINO_ARCH_ESP32
     if (_beaconUdp.beginMulticast(MULTICAST_GROUP, MULTICAST_PORT)) {
@@ -119,7 +135,6 @@ void SmartThingClass::asyncLoop() {
 }
 #endif
 
-// todo move to different async task
 void SmartThingClass::sendBeacon() {
   #ifdef ARDUINO_ARCH_ESP32
   _beaconUdp.beginMulticastPacket();
@@ -145,9 +160,9 @@ String SmartThingClass::connectToWifi() {
   if (ssid == nullptr || strlen(ssid) == 0) {
     LOGGER.warning(
       SMART_THING_TAG,
-      "Ssid is blank or mode null -> creating setup AP with name %s", _name.c_str()
+      "Ssid is blank or mode null -> creating setup AP with name %s", DEFAULT_DEVICE_NAME
     );
-    WiFi.softAP(_name);
+    WiFi.softAP(DEFAULT_DEVICE_NAME);
     delay(500);
     LOGGER.info(SMART_THING_TAG, "WiFi started in soft AP mode");
     return WiFi.softAPIP().toString();
@@ -211,19 +226,20 @@ void SmartThingClass::wipeSettings() {
 void SmartThingClass::updateDeviceName(String name) {
   name.trim();
   name.replace(" ", "_");
-  if (name == _name) {
+  if(name.isEmpty()) {
+    name = DEFAULT_DEVICE_NAME;
+  }
+  if (name.equals(STSettings.getDeviceName())) {
     return;
   }
-  _name = name;
-  // todo move from there
-  STSettings.setDeviceName(_name.c_str());
+  STSettings.setDeviceName(name);
   STSettings.save();
   updateBroadCastMessage();
   LOGGER.info(SMART_THING_TAG, "New device name %s", name.c_str());
 }
 
 void SmartThingClass::updateBroadCastMessage() {
-  _broadcastMessage = _ip + "$" + _type + "$" + _name + "$" + SMART_THING_VERSION;
+  _broadcastMessage = _ip + "$" + _type + "$" + String(STSettings.getDeviceName()) + "$" + SMART_THING_VERSION;
 }
 
 JsonDocument SmartThingClass::getConfigInfoJson() {
@@ -309,7 +325,7 @@ const char * SmartThingClass::getType() {
 }
 
 const char * SmartThingClass::getName() { 
-  return _name.c_str(); 
+  return STSettings.getDeviceName(); 
 }
 
 const char * SmartThingClass::getIp() {
